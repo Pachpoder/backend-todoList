@@ -29,7 +29,6 @@ El sistema guarda los datos en **arreglos en memoria** y está protegido por una
 
 ```bash
 git clone https://github.com/Pachpoder/backend-todoList.git
-cd backend-actividad3
 ```
 
 ### 2. Instala las dependencias
