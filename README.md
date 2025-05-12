@@ -28,7 +28,7 @@ El sistema guarda los datos en **arreglos en memoria** y está protegido por una
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/Pachpoder/backend-actividad3.git
+git clone https://github.com/Pachpoder/backend-todoList.git
 cd backend-actividad3
 ```
 
