@@ -1,3 +1,4 @@
+const db = require('./db');
 const express = require('express');
 const app = express();
 const PORT = 3000;
@@ -19,52 +20,100 @@ let goals = [];
 
 // GET /getTasks
 app.get('/getTasks', (req, res) => {
-  res.status(200).json(tasks);
+  db.query('SELECT * FROM tasks', (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las tareas' });
+    }
+    res.status(200).json(results);
+  });
 });
 
 // GET /getGoals
 app.get('/getGoals', (req, res) => {
-  res.status(200).json(goals);
+  db.query('SELECT * FROM goals', (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener las metas' });
+    }
+    res.status(200).json(results);
+  });
 });
 
 // POST /addTask
 app.post('/addTask', (req, res) => {
-  const newTask = req.body;
-  if (!newTask || !newTask.id || !newTask.name || !newTask.description || !newTask.dueDate) {
+  const { id, name, description, dueDate } = req.body;
+
+  if (!id || !name || !description || !dueDate) {
     return res.status(400).json({ error: 'Parámetros inválidos para agregar tarea' });
   }
-  tasks.push(newTask);
-  res.status(200).json({ message: 'Tarea agregada', task: newTask });
+
+  const query = 'INSERT INTO tasks (id, name, description, dueDate) VALUES (?, ?, ?, ?)';
+  db.query(query, [id, name, description, dueDate], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al agregar tarea', details: err });
+    }
+    res.status(200).json({ message: 'Tarea agregada exitosamente' });
+  });
 });
 
 // POST /addGoal
 app.post('/addGoal', (req, res) => {
-  const newGoal = req.body;
-  if (!newGoal || !newGoal.id || !newGoal.name || !newGoal.description || !newGoal.dueDate) {
+  const { id, name, description, dueDate } = req.body;
+
+  if (!id || !name || !description || !dueDate) {
     return res.status(400).json({ error: 'Parámetros inválidos para agregar meta' });
   }
-  goals.push(newGoal);
-  res.status(200).json({ message: 'Meta agregada', goal: newGoal });
+
+  const query = 'INSERT INTO goals (id, name, description, dueDate) VALUES (?, ?, ?, ?)';
+  db.query(query, [id, name, description, dueDate], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al agregar meta', details: err });
+    }
+    res.status(200).json({ message: 'Meta agregada exitosamente' });
+  });
 });
 
 // DELETE /removeTask
 app.delete('/removeTask', (req, res) => {
   const { id } = req.body;
+
   if (!id) {
     return res.status(400).json({ error: 'ID no proporcionado para eliminar tarea' });
   }
-  tasks = tasks.filter(task => task.id !== id);
-  res.status(200).json({ message: 'Tarea eliminada', id });
+
+  const query = 'DELETE FROM tasks WHERE id = ?';
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar tarea', details: err });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Tarea no encontrada' });
+    }
+
+    res.status(200).json({ message: 'Tarea eliminada exitosamente', id });
+  });
 });
 
 // DELETE /removeGoal
 app.delete('/removeGoal', (req, res) => {
   const { id } = req.body;
+
   if (!id) {
     return res.status(400).json({ error: 'ID no proporcionado para eliminar meta' });
   }
-  goals = goals.filter(goal => goal.id !== id);
-  res.status(200).json({ message: 'Meta eliminada', id });
+
+  const query = 'DELETE FROM goals WHERE id = ?';
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al eliminar meta', details: err });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Meta no encontrada' });
+    }
+
+    res.status(200).json({ message: 'Meta eliminada exitosamente', id });
+  });
 });
 
 // Iniciar servidor
