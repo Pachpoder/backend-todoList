@@ -1,11 +1,18 @@
+const cors = require('cors');
 const db = require('./db');
 const express = require('express');
 const app = express();
 const PORT = 3000;
 
 const API_KEY = '12345-mi-apikey';
+
+// Habilitamos CORS (debe ir antes de cualquier middleware de autenticación)
+app.use(cors());
+
+// Middleware para parsear JSON
 app.use(express.json());
 
+// Middleware para validar API Key
 app.use((req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (authHeader === API_KEY) {
@@ -14,9 +21,6 @@ app.use((req, res, next) => {
     res.status(401).json({ error: 'Unauthorized: Invalid API Key' });
   }
 });
-
-let tasks = [];
-let goals = [];
 
 // GET /getTasks
 app.get('/getTasks', (req, res) => {
@@ -57,18 +61,18 @@ app.post('/addTask', (req, res) => {
 
 // POST /addGoal
 app.post('/addGoal', (req, res) => {
-  const { id, name, description, dueDate } = req.body;
+  const { name, description, dueDate } = req.body;
 
-  if (!id || !name || !description || !dueDate) {
+  if (!name || !description || !dueDate) {
     return res.status(400).json({ error: 'Parámetros inválidos para agregar meta' });
   }
 
-  const query = 'INSERT INTO goals (id, name, description, dueDate) VALUES (?, ?, ?, ?)';
-  db.query(query, [id, name, description, dueDate], (err, result) => {
+  const query = 'INSERT INTO goals (name, description, dueDate) VALUES (?, ?, ?)';
+  db.query(query, [name, description, dueDate], (err, result) => {
     if (err) {
       return res.status(500).json({ error: 'Error al agregar meta', details: err });
     }
-    res.status(200).json({ message: 'Meta agregada exitosamente' });
+    res.status(200).json({ message: 'Meta agregada exitosamente', insertedId: result.insertId });
   });
 });
 
