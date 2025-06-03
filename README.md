@@ -1,167 +1,104 @@
-# Backend - Actividad Unidad III: Node.js + Express 
 
-Este proyecto implementa un backend simple para gestionar tareas y metas personales usando **Node.js** y **Express**.  
-El sistema guarda los datos en **arreglos en memoria** y está protegido por una API key a través de un middleware.
+# ToDo List Backend - Actividad 6
 
----
+Este es el backend de la aplicación ToDo List desarrollado con **Node.js + Express + MySQL**.
 
-## Tecnologías utilizadas
+## 🚀 Funcionalidades
+
+- CRUD completo para tareas (Tasks) y metas (Goals).
+- API protegida con API Key.
+- Conexión a base de datos MySQL.
+- Manejo de códigos de respuesta HTTP (200, 400, 401).
+- Integración completa con el frontend.
+
+## 🛠 Tecnologías
 
 - Node.js (LTS)
 - Express
+- MySQL
+- CORS
 
----
+## 📂 Instalación
 
-## Estructura del proyecto
+### 1️⃣ Clonar el repositorio
 
-```bash
-/backend-actividad3
-  - server.js
-  - package.json
-  - README.md
-```
-
----
-
-## Instrucciones para ejecutar el proyecto
-
-### 1. Clona el repositorio
-
-```bash
 git clone https://github.com/Pachpoder/backend-todoList.git
-```
+cd backend-todoList
 
-### 2. Instala las dependencias
+### 2️⃣ Instalar dependencias
 
-```bash
 npm install
-```
 
-### 3. Ejecuta el servidor
+### 3️⃣ Configurar base de datos en `db.js` (ya configurado):
 
-```bash
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'tu_password',
+  database: 'todo_app'
+});
+
+### 4️⃣ Iniciar el backend
+
 node server.js
-```
-El servidor iniciará en `http://localhost:3000`
 
----
+El backend quedará disponible en:
 
-## Seguridad: API Key
+http://localhost:3000
 
-Todos los endpoints requieren incluir un **header Authorization** con la siguiente API key:
+## 🔐 API Key
 
-```
+Para todas las peticiones debes enviar:
+
 Authorization: 12345-mi-apikey
-```
 
-Si no se incluye o es incorrecta, se devuelve un error 401.
 
----
 
-## Endpoints disponibles (usando Postman)
+# ToDo List Frontend - Actividad 6
 
-### GET `/getTasks`
+Este es el frontend de la aplicación ToDo List desarrollado con **React + Redux Toolkit + Axios + React Bootstrap**.
 
-- **Descripción:** Obtiene todas las tareas.
-- **Método:** `GET`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`
+## 🚀 Funcionalidades
 
-### GET `/getGoals`
+- Agregar, eliminar y visualizar tareas (Tasks).
+- Agregar, eliminar y visualizar metas (Goals).
+- Consumo de API REST desde el backend.
+- Manejo de estados con Redux Toolkit.
+- UI responsive usando React Bootstrap.
 
-- **Descripción:** Obtiene todas las metas.
-- **Método:** `GET`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`
+## 🛠 Tecnologías
 
----
+- React 19
+- Redux Toolkit
+- Axios
+- React Bootstrap
 
-### POST `/addTask`
+## 📂 Instalación
 
-- **Descripción:** Agrega una nueva tarea.
-- **Método:** `POST`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`  
-  `Content-Type: application/json`
-- **Body (JSON):**
+### 1️⃣ Clonar el repositorio
 
-```json
-{
-  "id": 1,
-  "name": "Estudiar Redux",
-  "description": "Revisar documentación oficial",
-  "dueDate": "2024-05-10"
-}
-```
+git clone https://github.com/Pachpoder/Proyecto2.git
+cd Proyecto2
 
----
+### 2️⃣ Instalar dependencias
 
-### POST `/addGoal`
+npm install
 
-- **Descripción:** Agrega una nueva meta.
-- **Método:** `POST`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`  
-  `Content-Type: application/json`
-- **Body (JSON):**
+### 3️⃣ Iniciar el frontend
 
-```json
-{
-  "id": 2,
-  "name": "Crear portafolio",
-  "description": "Subir proyectos a GitHub",
-  "dueDate": "2024-05-20"
-}
-```
+npm start
 
----
+El frontend quedará disponible en:
 
-### DELETE `/removeTask`
+http://localhost:3001
 
-- **Descripción:** Elimina una tarea por su `id`.
-- **Método:** `DELETE`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`  
-  `Content-Type: application/json`
-- **Body (JSON):**
+## 🔗 Conexión al backend
 
-```json
-{
-  "id": 1
-}
-```
+El frontend realiza peticiones hacia:
 
----
+http://localhost:3000
 
-### DELETE `/removeGoal`
+Asegúrate que el backend esté ejecutándose antes de iniciar el frontend.
 
-- **Descripción:** Elimina una meta por su `id`.
-- **Método:** `DELETE`
-- **Headers:**  
-  `Authorization: 12345-mi-apikey`  
-  `Content-Type: application/json`
-- **Body (JSON):**
-
-```json
-{
-  "id": 2
-}
-```
-
----
-
-## Notas
-
-- No se utiliza base de datos.
-- Todos los datos se almacenan en arreglos en memoria (`let tasks = []`, `let goals = []`).
-- Si el servidor se reinicia, los datos se pierden (comportamiento esperado).
-
----
-
-## Estado del proyecto
-
-✔️ Funcional  
-✔️ Seguro (con API key)  
-✔️ Estructurado  
-✔️ Listo para entrega académica
-
+✅ Ambos proyectos deben ejecutarse en paralelo.
+✅ Esta entrega cubre la actividad completa de la Unidad VI (Docker no incluido).
